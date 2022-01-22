@@ -1,0 +1,1 @@
+git clone C:\Users\Public\repo C:\Users\test\Desktop\Laba

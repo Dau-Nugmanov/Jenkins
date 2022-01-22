@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+         stage ('Clone') {
+            steps {
+                bat 'C:\\Users\\Public\\repo\\clone.bat'
+            }
+         }
+        stage('Build') {
+            steps {
+                bat  'C:\\Users\\test\\Desktop\\Laba\\build.bat'
+            }
+        }
+        stage('Test') {
+             steps {
+                 bat 'C:\\Users\\test\\Desktop\\Laba\\tests.bat'
+             }
+         }
+          stage('Archive') {
+              steps {
+                  zip zipFile: 'C:/Users/test/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', dir: 'C:/Users/test/Desktop/Laba/UnitTestProject1/bin/Debug'
+              }
+          }
+          stage('Deploy') {
+             steps {
+                  unzip zipFile: 'C:/Users/test/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', dir: 'C:/Users/test/Desktop/Laba1/' + env.BUILD_NUMBER.toString()
+             }
+          }
+    }
+
+     post { 
+         always { 
+             emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}" 
+         } 
+     }
+}
