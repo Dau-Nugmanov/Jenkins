@@ -2,19 +2,14 @@ pipeline {
     agent any
 
     stages {
-         stage ('Clone') {
-            steps {
-                bat 'C:\\Users\\Public\\repo\\clone.bat'
-            }
-         }
         stage('Build') {
             steps {
-                bat  'C:\\Users\\test\\Desktop\\Laba\\build.bat'
+                bat  'build.bat'
             }
         }
         stage('Test') {
              steps {
-                 bat 'C:\\Users\\test\\Desktop\\Laba\\tests.bat'
+                 bat 'tests.bat'
              }
          }
           stage('Archive') {
